@@ -54,6 +54,7 @@ function mainMenu(person, people){
     // TODO: get person's info
       break;
     case "family":
+      displayFamily(person, people)
     // TODO: get person's family
     break;
     case "descendants":
@@ -177,6 +178,21 @@ function searchByEyeColor(eyeColor, people){
   return potentialMatches;
 }
 
+function searchBySpouse(person, people){
+  if (person[0].currentSpouse == null)
+    return 'Currently not married.'
+  else if (person[0].currentSpouse != null){
+    let findSpouse = people.filter(function(potentialMatch){
+      if(potentialMatch.id == person[0].currentSpouse){
+        return true;
+      }
+      else{
+        return false;
+      }
+    })
+    return findSpouse
+  }
+}
 //TODO: add other trait filter functions here.
 
 
@@ -202,6 +218,11 @@ function displayPeople(potentialMatches, people){
   else{
     return; //stop execution
   }
+}
+
+function displayFamily(person, people){
+  let showSpouse = searchBySpouse(person, people)
+  alert(showSpouse)
 }
 
 function displayPerson(person){
