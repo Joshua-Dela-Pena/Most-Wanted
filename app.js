@@ -179,8 +179,9 @@ function searchByEyeColor(eyeColor, people){
 }
 
 function searchBySpouse(person, people){
-  if (person[0].currentSpouse == null)
+  if (person[0].currentSpouse == null){
     return 'Currently not married.'
+      }
   else if (person[0].currentSpouse != null){
     let findSpouse = people.filter(function(potentialMatch){
       if(potentialMatch.id == person[0].currentSpouse){
@@ -193,6 +194,24 @@ function searchBySpouse(person, people){
     return findSpouse
   }
 }
+
+function searchDescendantOf(person, people){
+  if (person[0].parents == []){
+    return 'No parents in system'
+  }
+  else if(person[0].parents != []){
+    let findParents = people.filter(function(potentialMatch){
+      if (person[0].parents.includes(potentialMatch.id)){
+        return true;
+      }
+      else{
+        return false;
+      }
+    })
+    return findParents
+  }
+}
+
 //TODO: add other trait filter functions here.
 
 
@@ -221,8 +240,18 @@ function displayPeople(potentialMatches, people){
 }
 
 function displayFamily(person, people){
-  let showSpouse = searchBySpouse(person, people)
-  alert(showSpouse)
+  let showSpouse = searchBySpouse(person, people);
+  let showSpouseString = showSpouse.map(function(person){
+    return 'Spouse: ' + person.firstName + ' ' + person.lastName;
+  })
+
+  let isDescendant = searchDescendantOf(person, people);
+  let isDescendantString = isDescendant.map(function(person){
+    return 'Parent: ' + person.firstName + ' ' + person.lastName
+  });
+  
+  let family = `${showSpouseString}\n${isDescendantString}`
+  alert(family)
 }
 
 function displayPerson(person){
