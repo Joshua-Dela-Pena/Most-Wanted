@@ -16,16 +16,30 @@ function app(people){
       mainMenu(searchResults, people); // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
       break;
     case 'no':
-      searchResults = searchByTrait(people);
-      if(searchResults.length > 1){
-        displayPeople(searchResults);
-        break;
+      let searchType = promptFor("Would you like to search by one trait or multiple? Enter 'one' or 'multiple'", autoValid);
+      if (searchType == 'one'){
+        searchResults = searchByTrait(people);
+        if(searchResults.length > 1){
+          displayPeople(searchResults);
+          break;
+        }
+        else{
+          mainMenu(searchResults, people); // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
+          break;
+        }
+        // TODO: search by traits
       }
-      else{
-        mainMenu(searchResults, people); // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
-        break;
+      else if(searchType == 'multiple'){
+        searchResults = searchByTraits(people);
+        if(searchResults.length > 1){
+          displayPeople(searchResults);
+          break;
+        }
+        else{
+          mainMenu(searchResults, people); // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
+          break;
+        }
       }
-      // TODO: search by traits
     default:
       app(people); // restart app
       break;
@@ -119,9 +133,42 @@ function searchByTrait(people){
     default:
     return mainMenu(person, people); // ask again
   }
+}
 
+function searchByTraits(people){
+  let searchCriteria = promptFor("Please type in search criteria without spaces to search by then value. Separate criteria by a semicolon (no spaces around semicolon). Can also select 'restart' or 'quit' (example - eyecolor brown;gender female)", autoValid);
+  searchCriteria = searchCriteria.split(';');
 
+  let searchPool = people;
 
+  for(let i=0; i<searchCriteria.length; i++){
+    let individualSearchCriteria = searchCriteria[i].split(' ');
+    let searchTrait = individualSearchCriteria[0];
+    let searchValue = individualSearchCriteria[1];
+
+    switch(searchTrait){
+      case "gender":
+        let findGender = searchByGender(searchValue, searchPool);
+        searchPool = findGender;
+        break;
+      case "height":
+        let findHeight = searchByHeight(searchValue, searchPool);
+        searchPool = findHeight;
+        break;
+      case "weight":
+        let findWeight = searchByWeight(searchValue, searchPool);
+        searchPool = findWeight;
+        break;
+      case "eyecolor":
+        let potentialMatches = searchByEyeColor(searchValue, searchPool);
+        searchPool = potentialMatches;
+        break;
+      default:
+        continue;
+    }
+  }
+  
+  return searchPool;
 }
 
 function searchByGender(gender, people){
@@ -246,7 +293,12 @@ function autoValid(input){
 //Unfinished validation function you can use for any of your custom validation callbacks.
 //can be used for things like eye color validation for example.
 function customValidation(input){
-  
+  if(input == 'female'){
+    return true
+  }
+  else if(input == 'brown' || input == 'blue'){
+    return true
+  }
 }
 
 //#endregion
