@@ -16,36 +16,24 @@ function app(people){
       mainMenu(searchResults, people); // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
       break;
     case 'no':
-      let searchType = promptFor("Would you like to search by one trait or multiple? Enter 'one' or 'multiple'", autoValid);
-      if (searchType == 'one'){
-        searchResults = searchByTrait(people);
-        if(searchResults.length > 1){
-          displayPeople(searchResults);
-          break;
-        }
-        else{
-          mainMenu(searchResults, people); // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
-          break;
-        }
-        // TODO: search by traits
+      searchResults = searchByTraits(people);
+      if(searchResults.length > 1){
+        displayPeople(searchResults, people);
+        break;
       }
-      else if(searchType == 'multiple'){
-        searchResults = searchByTraits(people);
-        if(searchResults.length > 1){
-          displayPeople(searchResults);
-          break;
-        }
-        else{
-          mainMenu(searchResults, people); // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
-          break;
-        }
+      else{
+        mainMenu(searchResults, people); // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
+        break;
       }
-    default:
-      app(people); // restart app
-      break;
+      
+      default:
+        app(people); // restart app
+        break;
+      }
   }
 
-}
+
+
 
 // Menu function to call once you find who you are looking for
 function mainMenu(person, people){
@@ -106,38 +94,8 @@ function searchByName(people){
   return foundPerson;
 }
 
-//unfinished function to search through an array of people to find matching eye colors. Use searchByName as reference.
-function searchByTrait(people){
-  let searchCriteria = promptFor("Please type in search criteria without spaces to search by then value or 'restart' or 'quit' (example - eyecolor brown)", autoValid);
-  searchCriteria = searchCriteria.split(' ');
-  let searchTrait = searchCriteria[0]
-  let searchValue = searchCriteria[1]
-
-  switch(searchTrait){
-    case "gender":
-      let findGender = searchByGender(searchValue, people);
-      return findGender;
-    case "height":
-      let findHeight = searchByHeight(searchValue, people);
-      return findHeight;
-    case "weight":
-      let findWeight = searchByWeight(searchValue, people);
-      return findWeight;
-    case "eyecolor":
-      let potentialMatches = searchByEyeColor(searchValue, people);
-      return potentialMatches;
-    case "restart":
-    app(people); // restart
-    break;
-    case "quit":
-    return; // stop execution
-    default:
-    return mainMenu(person, people); // ask again
-  }
-}
-
 function searchByTraits(people){
-  let searchCriteria = promptFor("Please type in search criteria without spaces to search by then value. Separate criteria by a semicolon (no spaces around semicolon). Can also select 'restart' or 'quit' (example - eyecolor brown;gender female)", autoValid);
+  let searchCriteria = promptFor("Please type in search criteria without spaces then value. \nSeparate multiple criteria by a semicolon (no spaces around semicolon). \nCan also select 'restart' or 'quit'.\n(example one criteria - eyecolor brown)\n(example multiple criteria - eyecolor brown;gender female)", autoValid);
   searchCriteria = searchCriteria.split(';');
 
   let searchPool = people;
@@ -149,20 +107,20 @@ function searchByTraits(people){
 
     switch(searchTrait){
       case "gender":
-        let findGender = searchByGender(searchValue, searchPool);
-        searchPool = findGender;
+        let potentialMatchesGender = searchByGender(searchValue, searchPool);
+        searchPool = potentialMatchesGender;
         break;
       case "height":
-        let findHeight = searchByHeight(searchValue, searchPool);
-        searchPool = findHeight;
+        let potentialMatchesHeight = searchByHeight(searchValue, searchPool);
+        searchPool = potentialMatchesHeight;
         break;
       case "weight":
-        let findWeight = searchByWeight(searchValue, searchPool);
-        searchPool = findWeight;
+        let potentialMatchesWeight = searchByWeight(searchValue, searchPool);
+        searchPool = potentialMatchesWeight;
         break;
       case "eyecolor":
-        let potentialMatches = searchByEyeColor(searchValue, searchPool);
-        searchPool = potentialMatches;
+        let potentialMatchesEyeColor = searchByEyeColor(searchValue, searchPool);
+        searchPool = potentialMatchesEyeColor;
         break;
       default:
         continue;
@@ -173,7 +131,7 @@ function searchByTraits(people){
 }
 
 function searchByGender(gender, people){
-  let findGender = people.filter(function(potentialMatch){
+  let potentialMatches = people.filter(function(potentialMatch){
     if(potentialMatch.gender == gender){
       return true;
     }
@@ -181,11 +139,11 @@ function searchByGender(gender, people){
       return false;
     }
   })
-  return findGender
+  return potentialMatches;
 }
 
 function searchByHeight(height, people){
-  let findHeight = people.filter(function(potentialMatch){
+  let potentialMatches = people.filter(function(potentialMatch){
     if(potentialMatch.height == height){
       return true;
     }
@@ -193,11 +151,11 @@ function searchByHeight(height, people){
       return false;
     }
   })
-  return findHeight
+  return potentialMatches;
 }
 
 function searchByWeight(weight, people){
-  let findWeight = people.filter(function(potentialMatch){
+  let potentialMatches = people.filter(function(potentialMatch){
     if(potentialMatch.weight == weight){
       return true;
     }
@@ -205,7 +163,7 @@ function searchByWeight(weight, people){
       return false;
     }
   })
-  return findWeight
+  return potentialMatches;
 }
 
 function searchByEyeColor(eyeColor, people){
@@ -217,7 +175,7 @@ function searchByEyeColor(eyeColor, people){
       return false;
     }
   })
-  return potentialMatches
+  return potentialMatches;
 }
 
 function searchBySpouse(person, people){
@@ -240,10 +198,19 @@ function searchBySpouse(person, people){
 //#region 
 
 // alerts a list of people
-function displayPeople(people){
-  alert(people.map(function(person){
+function displayPeople(potentialMatches, people){
+  let potentialMatchesList = potentialMatches.map(function(person){
     return person.firstName + " " + person.lastName;
-  }).join("\n"));
+  }).join("\n");
+
+  let continueApp = confirm(`The search returned multiple matches. Here are the potential matches:\n${potentialMatchesList}\n\nSelect 'OK' to start new search or 'Cancel' to exit app.`);
+  
+  if (continueApp == true){
+    app(people); //restarts app
+  }
+  else{
+    return; //stop execution
+  }
 }
 
 function displayFamily(person, people){
