@@ -58,6 +58,7 @@ function mainMenu(person, people){
     // TODO: get person's family
     break;
     case "descendants":
+      displayDescendants(person, people)
     // TODO: get person's descendants
     break;
     case "restart":
@@ -238,6 +239,18 @@ function displayPeople(potentialMatches, people){
     return; //stop execution
   }
 }
+function displayDescendants(person, people){
+  let children = [];
+  people.filter(function(potentialMatch){
+    if (potentialMatch.parents.includes(person[0].id)){
+      return true; 
+    }
+    else{
+      return false;
+    }
+  })
+    alert(children.firstName)
+  }
 
 function displayFamily(person, people){
   let showSpouse = searchBySpouse(person, people);
@@ -253,6 +266,7 @@ function displayFamily(person, people){
   let family = `${showSpouseString}\n${isDescendantString}`
   alert(family)
 }
+
 
 function displayPerson(person){
   // print all of the information about a person:
