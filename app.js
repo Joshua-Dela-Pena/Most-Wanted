@@ -13,6 +13,7 @@ function app(people){
   switch(searchType){
     case 'yes':
       searchResults = searchByName(people);
+      mainMenu(searchResults, people); // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
       break;
     case 'no':
       searchResults = searchByTraits(people);
@@ -21,18 +22,15 @@ function app(people){
         break;
       }
       else{
-        mainMenu(searchResults, people);
+        mainMenu(searchResults, people); // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
         break;
       }
       // TODO: search by traits
-      break;
     default:
       app(people); // restart app
       break;
   }
-  
-  // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
-  mainMenu(searchResults, people);
+
 }
 
 // Menu function to call once you find who you are looking for
