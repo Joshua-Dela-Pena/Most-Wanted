@@ -16,7 +16,7 @@ function app(people){
       mainMenu(searchResults, people); // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
       break;
     case 'no':
-      searchResults = searchByTraits(people);
+      searchResults = searchByTrait(people);
       if(searchResults.length > 1){
         displayPeople(searchResults);
         break;
@@ -92,7 +92,7 @@ function searchByName(people){
 }
 
 //unfinished function to search through an array of people to find matching eye colors. Use searchByName as reference.
-function searchByTraits(people){
+function searchByTrait(people){
   let searchCriteria = promptFor("Please type in search criteria without spaces to search by then value or 'restart' or 'quit' (example - eyecolor brown)", autoValid);
   searchCriteria = searchCriteria.split(' ');
   let searchTrait = searchCriteria[0]
@@ -100,14 +100,14 @@ function searchByTraits(people){
 
   switch(searchTrait){
     case "gender":
-    // TODO=
-    break;
+      let findGender = searchByGender(searchValue, people);
+      return findGender;
     case "height":
-    // TODO:=
-    break;
+      let findHeight = searchByHeight(searchValue, people);
+      return findHeight;
     case "weight":
-    // TODO=
-    break;
+      let findWeight = searchByWeight(searchValue, people);
+      return findWeight;
     case "eyecolor":
       let potentialMatches = searchByEyeColor(searchValue, people);
       return potentialMatches;
@@ -123,6 +123,43 @@ function searchByTraits(people){
 
 
 }
+
+function searchByGender(gender, people){
+  let findGender = people.filter(function(potentialMatch){
+    if(potentialMatch.gender == gender){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+  return findGender
+}
+
+function searchByHeight(height, people){
+  let findHeight = people.filter(function(potentialMatch){
+    if(potentialMatch.height == height){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+  return findHeight
+}
+
+function searchByWeight(weight, people){
+  let findWeight = people.filter(function(potentialMatch){
+    if(potentialMatch.weight == weight){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+  return findWeight
+}
+
 function searchByEyeColor(eyeColor, people){
   let potentialMatches = people.filter(function(potentialMatch){
     if(potentialMatch.eyeColor == eyeColor){
