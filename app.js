@@ -218,7 +218,6 @@ function displayPerson(person){
   // TODO: finish getting the rest of the information to display.
   alert(personInfo);
 }
-
 //#endregion
 
 
