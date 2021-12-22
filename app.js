@@ -182,7 +182,14 @@ function searchBySpouse(person, people){
   if (person[0].currentSpouse == null)
     return 'Currently not married.'
   else if (person[0].currentSpouse != null){
-    let findSpouse = people.filter(person[0].currentSpouse = people.id)
+    let findSpouse = people.filter(function(potentialMatch){
+      if(potentialMatch.id == person[0].currentSpouse){
+        return true;
+      }
+      else{
+        return false;
+      }
+    })
     return findSpouse
   }
 }
@@ -215,7 +222,7 @@ function displayPeople(potentialMatches, people){
 
 function displayFamily(person, people){
   let showSpouse = searchBySpouse(person, people)
-  return showSpouse
+  alert(showSpouse)
 }
 
 function displayPerson(person){
