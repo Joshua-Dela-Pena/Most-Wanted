@@ -66,6 +66,7 @@ function mainMenu(person, people){
     // TODO: get person's info
       break;
     case "family":
+      displayFamily(person, people)
     // TODO: get person's family
     break;
     case "descendants":
@@ -219,6 +220,14 @@ function searchByEyeColor(eyeColor, people){
   return potentialMatches
 }
 
+function searchBySpouse(person, people){
+  if (person[0].currentSpouse == null)
+    return 'Currently not married.'
+  else if (person[0].currentSpouse != null){
+    let findSpouse = people.filter(person[0].currentSpouse = people.id)
+    return findSpouse
+  }
+}
 //TODO: add other trait filter functions here.
 
 
@@ -235,6 +244,11 @@ function displayPeople(people){
   alert(people.map(function(person){
     return person.firstName + " " + person.lastName;
   }).join("\n"));
+}
+
+function displayFamily(person, people){
+  let showSpouse = searchBySpouse(person, people)
+  return showSpouse
 }
 
 function displayPerson(person){
@@ -294,10 +308,10 @@ function autoValid(input){
 //can be used for things like eye color validation for example.
 function customValidation(input){
   if(input == 'female'){
-    return true
+    return true;
   }
   else if(input == 'brown' || input == 'blue'){
-    return true
+    return true;
   }
 }
 
