@@ -15,10 +15,19 @@ function app(people){
       searchResults = searchByName(people);
       break;
     case 'no':
+      searchResults = searchByTraits(people);
+      if(searchResults.length > 1){
+        displayPeople(searchResults);
+        break;
+      }
+      else{
+        mainMenu(searchResults, people);
+        break;
+      }
       // TODO: search by traits
       break;
-      default:
-    app(people); // restart app
+    default:
+      app(people); // restart app
       break;
   }
   
@@ -38,8 +47,6 @@ function mainMenu(person, people){
 
 
   let displayOption = promptFor("Found " + person[0].firstName + " " + person[0].lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", autoValid);
-  
-  
 
   switch(displayOption){
     case "info":
@@ -86,8 +93,47 @@ function searchByName(people){
 }
 
 //unfinished function to search through an array of people to find matching eye colors. Use searchByName as reference.
-function searchByEyeColor(people){
+function searchByTraits(people){
+  let searchCriteria = promptFor("Please type in search criteria without spaces to search by then value or 'restart' or 'quit' (example - eyecolor brown)", autoValid);
+  searchCriteria = searchCriteria.split(' ');
+  let searchTrait = searchCriteria[0]
+  let searchValue = searchCriteria[1]
 
+  switch(searchTrait){
+    case "gender":
+    // TODO=
+    break;
+    case "height":
+    // TODO:=
+    break;
+    case "weight":
+    // TODO=
+    break;
+    case "eyecolor":
+      let potentialMatches = searchByEyeColor(searchValue, people);
+      return potentialMatches;
+    case "restart":
+    app(people); // restart
+    break;
+    case "quit":
+    return; // stop execution
+    default:
+    return mainMenu(person, people); // ask again
+  }
+
+
+
+}
+function searchByEyeColor(eyeColor, people){
+  let potentialMatches = people.filter(function(potentialMatch){
+    if(potentialMatch.eyeColor == eyeColor){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+  return potentialMatches
 }
 
 //TODO: add other trait filter functions here.
