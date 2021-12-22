@@ -213,6 +213,18 @@ function searchDescendantOf(person, people){
   }
 }
 
+function searchDescendants(person, people){
+  let children = people.filter(function(potentialMatch){
+    if (potentialMatch.parents.includes(person[0].id)){
+      return true; 
+    }
+    else{
+      return false;
+    }
+  })
+  return children
+  }
+
 //TODO: add other trait filter functions here.
 
 
@@ -239,18 +251,15 @@ function displayPeople(potentialMatches, people){
     return; //stop execution
   }
 }
+
 function displayDescendants(person, people){
-  let children = [];
-  people.filter(function(potentialMatch){
-    if (potentialMatch.parents.includes(person[0].id)){
-      return true; 
-    }
-    else{
-      return false;
-    }
-  })
-    alert(children.firstName)
-  }
+ let childrenMatches = searchDescendants(person, people);
+ let childrenMatchesString = childrenMatches.map(function(person){
+   return 'Child: ' + person.firstName + ' ' + person.lastName
+ })
+    alert(childrenMatchesString)
+}
+  
 
 function displayFamily(person, people){
   let showSpouse = searchBySpouse(person, people);
