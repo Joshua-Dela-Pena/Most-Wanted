@@ -225,6 +225,55 @@ function searchDescendants(person, people){
   return children
   }
 
+  function searchForSiblings(person, people){
+    let searchedPerson = person[0]
+    let parents = searchDescendantOf(person, people)
+    let siblings;
+    if (parents.length > 0){
+    if (parents.length === 2){
+      let parent1 = parents[0];
+      let parent2 = parents[1];
+      siblings = people.filter(function(potentialMatch){
+        if ((potentialMatch.parents.includes(parent1.id) || potentialMatch.parents.includes(parent2.id)) && searchedPerson.id != potentialMatch.id){
+          return true
+        }
+        else {
+          return false
+        }
+      })
+    }
+    if (parents.length === 1){
+      let parent1 = parents[0];
+      siblings = people.filter(function(potentialMatch){
+        if ((potentialMatch.parents.includes(parent1.id) && searchedPerson.id != potentialMatch.id)){
+          return true
+        }
+        else {
+          return false
+        }
+      })
+    }
+    if (searchedPerson.length > 0){
+      siblings = people.filter(function(potentialMatch){
+        if (potentialMatch.parents.includes(parents.id) == searchedPerson.parents){
+          return siblings 
+            }
+        else {
+          return false
+      }
+    })
+    }
+    if (siblings.length >= 1){
+      return siblings 
+    }
+    else {
+      return siblings = 'No Siblings'
+    }
+  }
+  else {
+    return siblings = 'No Siblings'
+  }
+  }
 //TODO: add other trait filter functions here.
 
 
@@ -272,10 +321,26 @@ function displayFamily(person, people){
     return 'Parent: ' + person.firstName + ' ' + person.lastName
   });
   
-  let family = `${showSpouseString}\n${isDescendantString}`
+  let isASibling = searchForSiblings(person, people);
+  if(isASibling.length > 0){
+    let isASiblingString = giveName(isASibling)
+  let family = `${showSpouseString}\n${isDescendantString}\n${isASiblingString}`
   alert(family)
-}
+  }
+else{
+    return 'No Siblings'
+  }
 
+  
+}
+  
+function giveName(names) {
+
+  let namesCompleted = (names.map(function(names){
+    return 'Sibling(s)' + names.firstName + " " + names.lastName;
+  }).join('\n'))
+return namesCompleted 
+}
 
 function displayPerson(person){
   // print all of the information about a person:
