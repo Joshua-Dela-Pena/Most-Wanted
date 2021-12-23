@@ -316,9 +316,6 @@ function displayDescendants(person, people){
    descendants = getName(descendants);
    showDescendantsString = '\n' + descendants +'\n';
  }
- else{
-   showDescendantsString = 'No descendants in system.'
- }
   
  let continueApp = confirm(`Descendants of ${person[0].firstName} ${person[0].lastName}:\n${showDescendantsString}\n\nSelect 'OK' to go back to person or 'Cancel' to start a new search.`);
   if (continueApp == true){
