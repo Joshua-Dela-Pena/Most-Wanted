@@ -50,16 +50,13 @@ function mainMenu(person, people){
 
   switch(displayOption){
     case "info":
-      displayPerson(person)
-    // TODO: get person's info
+      displayPerson(person, people)
       break;
     case "family":
       displayFamily(person, people)
-    // TODO: get person's family
     break;
     case "descendants":
       displayDescendants(person, people)
-    // TODO: get person's descendants
     break;
     case "restart":
     app(people); // restart
@@ -91,7 +88,6 @@ function searchByName(people){
       return false;
     }
   })
-  // TODO: find the person single person object using the name they entered.
   return foundPerson;
 }
 
@@ -181,7 +177,7 @@ function searchByEyeColor(eyeColor, people){
 
 function searchBySpouse(person, people){
   if (person[0].currentSpouse == null){
-    alert('Currently not married.') 
+    return null;
       }
   else if (person[0].currentSpouse != null){
     let findSpouse = people.filter(function(potentialMatch){
@@ -197,10 +193,10 @@ function searchBySpouse(person, people){
 }
 
 function searchDescendantOf(person, people){
-  if (person[0].parents == []){
-    return 'No parents in system'
+  if (person[0].parents.length == 0){
+    return null;
   }
-  else if(person[0].parents != []){
+  else if(person[0].parents.length > 0){
     let findParents = people.filter(function(potentialMatch){
       if (person[0].parents.includes(potentialMatch.id)){
         return true;
@@ -245,14 +241,14 @@ function searchDescendantsRecursion(person, people, generation=null){
 
 function searchForSiblings(person, people){
   let searchedPerson = person[0]
-  let parents = searchDescendantOf(person, people)
+  let parents = person[0].parents
   let siblings;
   if (parents.length > 0){
   if (parents.length === 2){
     let parent1 = parents[0];
     let parent2 = parents[1];
     siblings = people.filter(function(potentialMatch){
-      if ((potentialMatch.parents.includes(parent1.id) || potentialMatch.parents.includes(parent2.id)) && searchedPerson.id != potentialMatch.id){
+      if ((potentialMatch.parents.includes(parent1) || potentialMatch.parents.includes(parent2)) && searchedPerson.id != potentialMatch.id){
         return true
       }
       else {
@@ -263,7 +259,7 @@ function searchForSiblings(person, people){
   if (parents.length === 1){
     let parent1 = parents[0];
     siblings = people.filter(function(potentialMatch){
-      if ((potentialMatch.parents.includes(parent1.id) && searchedPerson.id != potentialMatch.id)){
+      if ((potentialMatch.parents.includes(parent1) && searchedPerson.id != potentialMatch.id)){
         return true
       }
       else {
@@ -271,16 +267,7 @@ function searchForSiblings(person, people){
       }
     })
   }
-  if (searchedPerson.length > 0){
-    siblings = people.filter(function(potentialMatch){
-      if (potentialMatch.parents.includes(parents.id) == searchedPerson.parents){
-        return siblings 
-          }
-      else {
-        return false
-    }
-  })
-  }
+
   if (siblings.length >= 1){
     return siblings 
   }
@@ -320,51 +307,77 @@ function displayPeople(potentialMatches, people){
 }
 
 function displayDescendants(person, people){
- let childrenMatches = searchDescendantsRecursion(person[0], people);
- let childrenMatchesString = childrenMatches.map(function(person){
-   return 'Descendants: ' + person.firstName + ' ' + person.lastName
- })
-    alert(childrenMatchesString)
+ let descendants = searchDescendantsRecursion(person[0], people);
+ let showDescendantsString = '';
+ if(descendants.length >0){
+   descendants = getName(descendants);
+   showDescendantsString = '\n' + descendants +'\n';
+ }
+ else{
+   showDescendantsString = 'No descendants in system.'
+ }
+  
+ let continueApp = confirm(`Descendants of ${person[0].firstName} ${person[0].lastName}:\n${showDescendantsString}\n\nSelect 'OK' to start new search or 'Cancel' to exit app.`);
+  if (continueApp == true){
+    app(people); //restarts app
+  }
+  else{
+    return; //stop execution
+  }
 }
   
 
 function displayFamily(person, people){
-  let showSpouseString = ' '
-  let showSpouse = searchBySpouse(person, people);
-  if(showSpouse != undefined){
-    showSpouseString = showSpouse.map(function(person){
-    return 'Spouse: ' + person.firstName + ' ' + person.lastName;
-  }).join("\n")}
+  let family = '';
+  let spouse = searchBySpouse(person, people);
+  if(spouse != null){
+    spouse = getName(spouse);
+    let showSpouseString = 'Spouse:\n' + spouse + '\n';
+    family += showSpouseString + '\n';
+  }
   else{
-    ;
-  }
-  let isDescendant = searchDescendantOf(person, people);
-  let isDescendantString = isDescendant.map(function(person){
-    return 'Parent: ' + person.firstName + ' ' + person.lastName
-  }).join("\n");
-
-  let isASibling = searchForSiblings(person, people);
-  if(isASibling == 'No Siblings'){
-    alert('No siblings')
-  }
-  else if(isASibling.length > 0){
-    let isASiblingString = giveName(isASibling)
-  let family = `${showSpouseString}\n${isDescendantString}\n${isASiblingString}`
-  alert(family)
+    family += 'No spouse in system.\n'
   }
 
-  
+  let parents = searchDescendantOf(person, people);
+  if (parents != null){
+    parents = getName(parents);
+    let showParentsString = 'Parents:\n' + parents + '\n';
+    family += showParentsString + '\n';
+  }
+  else{
+    family += 'No parents in system.\n'
+  }
 
-}  
-function giveName(names) {
+  let siblings = searchForSiblings(person, people);
+  if(siblings != 'No Siblings'){
+    siblings = getName(siblings);
+    let showSiblingsString = 'Siblings:\n' + siblings + '\n';
+    family += showSiblingsString + '\n';
+  }
+  else{
+    family += 'No siblings in system.'
+  }
 
-  let namesCompleted = (names.map(function(names){
-    return + names.firstName + " " + names.lastName;
+  let alertFamily = `${person[0].firstName} ${person[0].lastName} Family:\n\n${family}`;
+  let continueApp = confirm(`${alertFamily}\n\nSelect 'OK' to start new search or 'Cancel' to exit app.`);
+  if (continueApp == true){
+    app(people); //restarts app
+  }
+  else{
+    return; //stop execution
+  }
+  }
+
+ 
+function getName(names) {
+  let namesCompleted = (names.map(function(name){
+    return name.firstName + " " + name.lastName;
   }).join('\n'))
 return namesCompleted 
 }
 
-function displayPerson(person){
+function displayPerson(person, people){
   // print all of the information about a person:
   // height, weight, age, name, occupation, eye color.
   let personInfo = "First Name: " + person[0].firstName + "\n";
@@ -376,7 +389,13 @@ function displayPerson(person){
   personInfo += "Eye Color: " + person[0].eyeColor + "\n";
   personInfo += "Occupation: " + person[0].occupation + "\n";
   // TODO: finish getting the rest of the information to display.
-  alert(personInfo);
+  let continueApp = confirm(`${personInfo}\n\nSelect 'OK' to start new search or 'Cancel' to exit app.`);
+  if (continueApp == true){
+    app(people); //restarts app
+  }
+  else{
+    return; //stop execution
+  }
 }
 //#endregion
 
@@ -428,19 +447,50 @@ function mainMenuValidation(input){
 }
 
 function traitValidate(input){
-  if(input.includes('eye color') || input.includes(' ;') || input.includes('; ') ){
+  if(input.includes(' ;') || input.includes('; ') ){
     return false;
   }
+
+  else if(input.toLowerCase() == 'restart' || input.toLowerCase() == 'quit'){
+    return true;
+  }
+
   else{
-    if(input.toLowerCase() == 'restart' || input.toLowerCase() == 'quit'){
-      return true;
+    input = input.split(';');
+    for(let i=0; i<input.length; i++){
+      if(input[i].includes('eyecolor ') || input[i].includes('height ') || input[i].includes('weight ') || input[i].includes('gender ')){
+         if(input[i].includes('eyecolor ')){
+           if(input[i].includes('brown') || input[i].includes('black') || input[i].includes('hazel') || input[i].includes('blue') || input[i].includes('green')){
+             continue;
+           }
+           else{
+             return false;
+           }
+         }
+         else if(input[i].includes('gender ')){
+           if(input[i].includes('male') || input[i].includes('female')){
+             continue;
+           }
+           else{
+             return false;
+           }
+         }
+         else if(input[i].includes('height ')){
+           height = input.match(/\d+/g);
+           if(50 < height && height <80){
+             continue;
+           }
+           else{
+             return false;
+           }
+         }
+      }
+
+      else{
+        return false;
     }
-    else if(input.includes('eyecolor ') || input.includes('height ') || input.includes('weight ') || input.includes('gender ')){
-      return true;
     }
-    else{
-      return false;
-    }
+    return true;
     }
   }
 
