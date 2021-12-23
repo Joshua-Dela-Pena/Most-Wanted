@@ -46,7 +46,7 @@ function mainMenu(person, people){
   }
 
 
-  let displayOption = promptFor("Found " + person[0].firstName + " " + person[0].lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", autoValid);
+  let displayOption = promptFor("Found " + person[0].firstName + " " + person[0].lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", mainMenuValidation).toLowerCase();
 
   switch(displayOption){
     case "info":
@@ -96,7 +96,7 @@ function searchByName(people){
 }
 
 function searchByTraits(people){
-  let searchCriteria = promptFor("Please type in search criteria without spaces then value. \nSeparate multiple criteria by a semicolon (no spaces around semicolon). \nCan also select 'restart' or 'quit'.\n(example one criteria - eyecolor brown)\n(example multiple criteria - eyecolor brown;gender female)", autoValid);
+  let searchCriteria = promptFor("Please type in search criteria without spaces then value. \n'Separate multiple criteria by a semicolon (no spaces around semicolon). \nCan also select 'restart' or 'quit'.\n(example one criteria - eyecolor brown)\n(example multiple criteria - eyecolor brown;gender female)", traitValidate).toLowerCase();
   searchCriteria = searchCriteria.split(';');
 
   let searchPool = people;
@@ -357,7 +357,7 @@ else{
 function giveName(names) {
 
   let namesCompleted = (names.map(function(names){
-    return 'Sibling(s): ' + names.firstName + " " + names.lastName;
+    return + names.firstName + " " + names.lastName;
   }).join('\n'))
 return namesCompleted 
 }
@@ -416,13 +416,31 @@ function autoValid(input){
 
 //Unfinished validation function you can use for any of your custom validation callbacks.
 //can be used for things like eye color validation for example.
-function customValidation(input){
-  if(input == 'female'){
+function mainMenuValidation(input){
+  if(input.toLowerCase() == 'info' || input.toLowerCase() == 'family' || input.toLowerCase() == 'descendants' || input.toLowerCase() == 'restart' || input.toLowerCase() == 'quit'){
     return true;
   }
-  else if(input == 'brown' || input == 'blue'){
-    return true;
+  else {
+    return false;
   }
 }
+
+function traitValidate(input){
+  if(input.includes('eye color') || input.includes(' ;') || input.includes('; ') ){
+    return false;
+  }
+  else{
+    if(input.toLowerCase() == 'restart' || input.toLowerCase() == 'quit'){
+      return true;
+    }
+    else if(input.includes('eyecolor ') || input.includes('height ') || input.includes('weight ') || input.includes('gender ')){
+      return true;
+    }
+    else{
+      return false;
+    }
+    }
+  }
+
 
 //#endregion
