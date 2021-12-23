@@ -213,67 +213,85 @@ function searchDescendantOf(person, people){
   }
 }
 
-function searchDescendants(person, people){
-  let children = people.filter(function(potentialMatch){
-    if (potentialMatch.parents.includes(person[0].id)){
-      return true; 
+function searchDescendantsRecursion(person, people, generation=null){
+  let generations = people.filter(function(potentialMatch){
+    if (potentialMatch.parents.includes(person.id)){
+      return true;
     }
     else{
       return false;
     }
   })
-  return children
+  
+  let allGenerations;
+  if(generation == null && generations.length > 0){
+    allGenerations = generations
+  }
+  else if (generation != null && generations.length == 0){
+    allGenerations = generation
+  }
+  else if(generation!= null && generations.length >0){
+    allGenerations = generations.concat(generation)
   }
 
-  function searchForSiblings(person, people){
-    let searchedPerson = person[0]
-    let parents = searchDescendantOf(person, people)
-    let siblings;
-    if (parents.length > 0){
-    if (parents.length === 2){
-      let parent1 = parents[0];
-      let parent2 = parents[1];
-      siblings = people.filter(function(potentialMatch){
-        if ((potentialMatch.parents.includes(parent1.id) || potentialMatch.parents.includes(parent2.id)) && searchedPerson.id != potentialMatch.id){
-          return true
-        }
-        else {
-          return false
-        }
-      })
+  for(let i=0; i<generations.length; i++){
+    allGenerations = searchDescendantsRecursion(generations[i], people, allGenerations);
+
+  }
+
+  return allGenerations
     }
-    if (parents.length === 1){
-      let parent1 = parents[0];
-      siblings = people.filter(function(potentialMatch){
-        if ((potentialMatch.parents.includes(parent1.id) && searchedPerson.id != potentialMatch.id)){
-          return true
-        }
-        else {
-          return false
-        }
-      })
-    }
-    if (searchedPerson.length > 0){
-      siblings = people.filter(function(potentialMatch){
-        if (potentialMatch.parents.includes(parents.id) == searchedPerson.parents){
-          return siblings 
-            }
-        else {
-          return false
+  
+
+function searchForSiblings(person, people){
+  let searchedPerson = person[0]
+  let parents = searchDescendantOf(person, people)
+  let siblings;
+  if (parents.length > 0){
+  if (parents.length === 2){
+    let parent1 = parents[0];
+    let parent2 = parents[1];
+    siblings = people.filter(function(potentialMatch){
+      if ((potentialMatch.parents.includes(parent1.id) || potentialMatch.parents.includes(parent2.id)) && searchedPerson.id != potentialMatch.id){
+        return true
+      }
+      else {
+        return false
       }
     })
+  }
+  if (parents.length === 1){
+    let parent1 = parents[0];
+    siblings = people.filter(function(potentialMatch){
+      if ((potentialMatch.parents.includes(parent1.id) && searchedPerson.id != potentialMatch.id)){
+        return true
+      }
+      else {
+        return false
+      }
+    })
+  }
+  if (searchedPerson.length > 0){
+    siblings = people.filter(function(potentialMatch){
+      if (potentialMatch.parents.includes(parents.id) == searchedPerson.parents){
+        return siblings 
+          }
+      else {
+        return false
     }
-    if (siblings.length >= 1){
-      return siblings 
-    }
-    else {
-      return siblings = 'No Siblings'
-    }
+  })
+  }
+  if (siblings.length >= 1){
+    return siblings 
   }
   else {
     return siblings = 'No Siblings'
   }
-  }
+}
+else {
+  return siblings = 'No Siblings'
+}
+}
 //TODO: add other trait filter functions here.
 
 
@@ -302,9 +320,9 @@ function displayPeople(potentialMatches, people){
 }
 
 function displayDescendants(person, people){
- let childrenMatches = searchDescendants(person, people);
+ let childrenMatches = searchDescendantsRecursion(person[0], people);
  let childrenMatchesString = childrenMatches.map(function(person){
-   return 'Child: ' + person.firstName + ' ' + person.lastName
+   return 'Descendants: ' + person.firstName + ' ' + person.lastName
  })
     alert(childrenMatchesString)
 }
@@ -314,12 +332,12 @@ function displayFamily(person, people){
   let showSpouse = searchBySpouse(person, people);
   let showSpouseString = showSpouse.map(function(person){
     return 'Spouse: ' + person.firstName + ' ' + person.lastName;
-  })
+  }).join("\n");
 
   let isDescendant = searchDescendantOf(person, people);
   let isDescendantString = isDescendant.map(function(person){
     return 'Parent: ' + person.firstName + ' ' + person.lastName
-  });
+  }).join("\n");
   
   let isASibling = searchForSiblings(person, people);
   if(isASibling.length > 0){
