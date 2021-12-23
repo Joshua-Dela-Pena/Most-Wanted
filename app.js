@@ -334,25 +334,27 @@ function displayFamily(person, people){
   if(showSpouse != undefined){
     showSpouseString = showSpouse.map(function(person){
     return 'Spouse: ' + person.firstName + ' ' + person.lastName;
-  }).join("\n");
-
+  }).join("\n")}
+  else{
+    ;
+  }
   let isDescendant = searchDescendantOf(person, people);
   let isDescendantString = isDescendant.map(function(person){
     return 'Parent: ' + person.firstName + ' ' + person.lastName
   }).join("\n");
-  
+
   let isASibling = searchForSiblings(person, people);
-  if(isASibling.length > 0){
+  if(isASibling == 'No Siblings'){
+    alert('No siblings')
+  }
+  else if(isASibling.length > 0){
     let isASiblingString = giveName(isASibling)
   let family = `${showSpouseString}\n${isDescendantString}\n${isASiblingString}`
   alert(family)
   }
-else{
-    return 'No Siblings'
-  }
 
   
-}
+
 }  
 function giveName(names) {
 
