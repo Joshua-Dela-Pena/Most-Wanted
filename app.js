@@ -309,7 +309,10 @@ function displayPeople(potentialMatches, people){
 function displayDescendants(person, people){
  let descendants = searchDescendantsRecursion(person[0], people);
  let showDescendantsString = '';
- if(descendants.length >0){
+ if(descendants == undefined){
+    showDescendantsString = 'No descendants in system.'
+ }
+ else if(descendants.length >0){
    descendants = getName(descendants);
    showDescendantsString = '\n' + descendants +'\n';
  }
@@ -317,12 +320,12 @@ function displayDescendants(person, people){
    showDescendantsString = 'No descendants in system.'
  }
   
- let continueApp = confirm(`Descendants of ${person[0].firstName} ${person[0].lastName}:\n${showDescendantsString}\n\nSelect 'OK' to start new search or 'Cancel' to exit app.`);
+ let continueApp = confirm(`Descendants of ${person[0].firstName} ${person[0].lastName}:\n${showDescendantsString}\n\nSelect 'OK' to go back to person or 'Cancel' to start a new search.`);
   if (continueApp == true){
-    app(people); //restarts app
+    mainMenu(person, people); //stop execution
   }
   else{
-    return; //stop execution
+    app(people); //restarts app
   }
 }
   
@@ -360,12 +363,12 @@ function displayFamily(person, people){
   }
 
   let alertFamily = `${person[0].firstName} ${person[0].lastName} Family:\n\n${family}`;
-  let continueApp = confirm(`${alertFamily}\n\nSelect 'OK' to start new search or 'Cancel' to exit app.`);
+  let continueApp = confirm(`${alertFamily}\n\nSelect 'OK' to go back to person or 'Cancel' to start a new search.`);
   if (continueApp == true){
-    app(people); //restarts app
+    mainMenu(person, people); //stop execution
   }
   else{
-    return; //stop execution
+    app(people); //restarts app
   }
   }
 
@@ -389,12 +392,12 @@ function displayPerson(person, people){
   personInfo += "Eye Color: " + person[0].eyeColor + "\n";
   personInfo += "Occupation: " + person[0].occupation + "\n";
   // TODO: finish getting the rest of the information to display.
-  let continueApp = confirm(`${personInfo}\n\nSelect 'OK' to start new search or 'Cancel' to exit app.`);
+  let continueApp = confirm(`${personInfo}\n\nSelect 'OK' to go back to person or 'Cancel' to start a new search.`);
   if (continueApp == true){
-    app(people); //restarts app
+    mainMenu(person, people); //stop execution
   }
   else{
-    return; //stop execution
+    app(people); //restarts app
   }
 }
 //#endregion
