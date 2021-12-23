@@ -77,8 +77,8 @@ function mainMenu(person, people){
 
 //nearly finished function used to search through an array of people to find matching first and last name and return a SINGLE person object.
 function searchByName(people){
-  let firstName = promptFor("What is the person's first name?", autoValid);
-  let lastName = promptFor("What is the person's last name?", autoValid);
+  let firstName = promptFor("What is the person's first name?", nameValid);
+  let lastName = promptFor("What is the person's last name?", nameValid);
 
   let foundPerson = people.filter(function(potentialMatch){
     if(potentialMatch.firstName === firstName && potentialMatch.lastName === lastName){
@@ -442,6 +442,15 @@ function mainMenuValidation(input){
     return true;
   }
   else {
+    return false;
+  }
+}
+
+function nameValid(input){
+  if(input.charAt(0) == input.charAt(0).toUpperCase()){
+    return true;
+  }
+  else{
     return false;
   }
 }
