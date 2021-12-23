@@ -181,7 +181,7 @@ function searchByEyeColor(eyeColor, people){
 
 function searchBySpouse(person, people){
   if (person[0].currentSpouse == null){
-    return 'Currently not married.'
+    alert('Currently not married.') 
       }
   else if (person[0].currentSpouse != null){
     let findSpouse = people.filter(function(potentialMatch){
@@ -311,8 +311,10 @@ function displayDescendants(person, people){
   
 
 function displayFamily(person, people){
+  let showSpouseString = ' '
   let showSpouse = searchBySpouse(person, people);
-  let showSpouseString = showSpouse.map(function(person){
+  if(showSpouse != undefined){
+    showSpouseString = showSpouse.map(function(person){
     return 'Spouse: ' + person.firstName + ' ' + person.lastName;
   })
 
@@ -333,11 +335,11 @@ else{
 
   
 }
-  
+}  
 function giveName(names) {
 
   let namesCompleted = (names.map(function(names){
-    return 'Sibling(s)' + names.firstName + " " + names.lastName;
+    return 'Sibling(s): ' + names.firstName + " " + names.lastName;
   }).join('\n'))
 return namesCompleted 
 }
