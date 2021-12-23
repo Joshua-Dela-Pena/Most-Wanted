@@ -476,7 +476,7 @@ function traitValidate(input){
            }
          }
          else if(input[i].includes('height ')){
-           height = input.match(/\d+/g);
+           let height = input[i].match(/(\d+)/);
            if(50 < height && height <80){
              continue;
            }
@@ -484,6 +484,15 @@ function traitValidate(input){
              return false;
            }
          }
+         else if(input[i].includes('weight ')){
+          let weight = input[i].match(/(\d+)/);
+          if(60 < weight && weight <500){
+            continue;
+          }
+          else{
+            return false;
+          }
+        }
       }
 
       else{
