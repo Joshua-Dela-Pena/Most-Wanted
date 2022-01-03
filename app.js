@@ -261,16 +261,20 @@ function displayAllData(selectedPeople){
     let familyString = i + "family";
     let descendantString = i + "descendants";
 
+    let capitalizedGender = selectedPeople[i].gender.charAt(0).toUpperCase();
+    let capitalizedEyeColor = selectedPeople[i].eyeColor.charAt(0).toUpperCase() + selectedPeople[i].eyeColor.slice(1);
+    let capitalizedOcc = selectedPeople[i].occupation.charAt(0).toUpperCase() + selectedPeople[i].occupation.slice(1);
+
     peopleTable.innerHTML += `<tr>
     <td class="center-text">${i}</td>
     <td class="center-text">${selectedPeople[i].firstName}</td>
     <td class="center-text">${selectedPeople[i].lastName}</td>
-    <td class="center-text">${selectedPeople[i].gender}</td>
+    <td class="center-text">${capitalizedGender}</td>
     <td class="center-text">${selectedPeople[i].dob}</td>
     <td class="center-text">${selectedPeople[i].height}</td>
     <td class="center-text">${selectedPeople[i].weight}</td>
-    <td class="center-text">${selectedPeople[i].eyeColor}</td>
-    <td class="center-text">${selectedPeople[i].occupation}</td>
+    <td class="center-text">${capitalizedEyeColor}</td>
+    <td class="center-text">${capitalizedOcc}</td>
     <td class="center-text"><button id=${familyString}>Display Family</button></td>
     <td class="center-text"><button id=${descendantString}>Display Descendants</button></td>
     </tr>`
@@ -283,24 +287,24 @@ document.body.addEventListener('click',(element) => {
   console.log(element.target.id);
   if(searchData.length != 0){
     if(element.target.id.includes('family')){
-      let familyIndex = element.target.id.charAt(0);
+      let familyIndex = element.target.id.match(/\d+/)[0];
       displayFamily(searchData[familyIndex], allData)
     }
   
     else if(element.target.id.includes('descendants')){
-      let descendantsIndex = element.target.id.charAt(0);
+      let descendantsIndex = element.target.id.match(/\d+/)[0];
       displayDescendants(searchData[descendantsIndex], allData)
     }
   }
 
   else{
     if(element.target.id.includes('family')){
-      let familyIndex = element.target.id.charAt(0);
+      let familyIndex = element.target.id.match(/\d+/)[0];;
       displayFamily(allData[familyIndex], allData)
     }
   
     else if(element.target.id.includes('descendants')){
-      let descendantsIndex = element.target.id.charAt(0);
+      let descendantsIndex = element.target.id.match(/\d+/)[0];
       displayDescendants(allData[descendantsIndex], allData)
     }
   }
