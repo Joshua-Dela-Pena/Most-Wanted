@@ -195,12 +195,12 @@ function searchByEyeColor(eyeColor, people){
 }
 
 function searchBySpouse(person, people){
-  if (person[0].currentSpouse == null){
+  if (person.currentSpouse == null){
     return null;
       }
-  else if (person[0].currentSpouse != null){
+  else if (person.currentSpouse != null){
     let findSpouse = people.filter(function(potentialMatch){
-      if(potentialMatch.id == person[0].currentSpouse){
+      if(potentialMatch.id == person.currentSpouse){
         return true;
       }
       else{
@@ -212,12 +212,12 @@ function searchBySpouse(person, people){
 }
 
 function searchDescendantOf(person, people){
-  if (person[0].parents.length == 0){
+  if (person.parents.length == 0){
     return null;
   }
-  else if(person[0].parents.length > 0){
+  else if(person.parents.length > 0){
     let findParents = people.filter(function(potentialMatch){
-      if (person[0].parents.includes(potentialMatch.id)){
+      if (person.parents.includes(potentialMatch.id)){
         return true;
       }
       else{
@@ -259,8 +259,8 @@ function searchDescendantsRecursion(person, people, generation=null){
   
 
 function searchForSiblings(person, people){
-  let searchedPerson = person[0]
-  let parents = person[0].parents
+  let searchedPerson = person
+  let parents = person.parents
   let siblings;
   if (parents.length > 0){
   if (parents.length === 2){
@@ -310,23 +310,34 @@ else {
 //#region 
 
 // alerts a list of people
-function displayAllData(peopleInfo, people){
+function displayAllData(selectedPeople, people){
   let peopleTable = document.getElementById('matchedPeopleInfo');
   if (peopleTable.innerHTML != "") {
     clearTable();
   }
 
-  for(let i=0;i<peopleInfo.length;i++){
+  for(let i=0;i<selectedPeople.length;i++){
+    let familyString = "family" + i;
+
     peopleTable.innerHTML += `<tr>
-    <td>${peopleInfo[i].firstName}</td>
-    <td>${peopleInfo[i].lastName}</td>
-    <td>${peopleInfo[i].gender}</td>
-    <td>${peopleInfo[i].dob}</td>
-    <td>${peopleInfo[i].height}</td>
-    <td>${peopleInfo[i].weight}</td>
-    <td>${peopleInfo[i].eyeColor}</td>
-    <td>${peopleInfo[i].occupation}</td>
+    <td>${selectedPeople[i].firstName}</td>
+    <td>${selectedPeople[i].lastName}</td>
+    <td>${selectedPeople[i].gender}</td>
+    <td>${selectedPeople[i].dob}</td>
+    <td>${selectedPeople[i].height}</td>
+    <td>${selectedPeople[i].weight}</td>
+    <td>${selectedPeople[i].eyeColor}</td>
+    <td>${selectedPeople[i].occupation}</td>
+    <td><button id="family">Display Family</button></td>
+    <td><button id="descendants">Display Descendants</button></td>
     </tr>`
+
+    document.getElementById("family").onclick = function () {displayFamily(selectedPeople[i], people)};
+    document.getElementById("descendants").onclick = function () {displayDescendants(selectedPeople[i], people)};
+
+   // displayFamily(selectedPeople[i], people);
+
+ 
   }
 }
 
@@ -335,9 +346,7 @@ function clearTable(){
   peopleTable.innerHTML = '<tr> <td></td><td></td> <tr>'
 }
 
-function alertHello(hello){
-  alert(hello)
-}
+
 // function displayPeople(potentialMatches, people){
 //   let potentialMatchesList = potentialMatches.map(function(person){
 //     return person.firstName + " " + person.lastName;
@@ -354,7 +363,7 @@ function alertHello(hello){
 // }
 
 function displayDescendants(person, people){
- let descendants = searchDescendantsRecursion(person[0], people);
+ let descendants = searchDescendantsRecursion(person, people);
  let showDescendantsString = '';
  if(descendants == undefined){
     showDescendantsString = 'No descendants in system.'
@@ -364,13 +373,8 @@ function displayDescendants(person, people){
    showDescendantsString = '\n' + descendants +'\n';
  }
   
- let continueApp = confirm(`Descendants of ${person[0].firstName} ${person[0].lastName}:\n${showDescendantsString}\n\nSelect 'OK' to go back to person or 'Cancel' to start a new search.`);
-  if (continueApp == true){
-    mainMenu(person, people); //stop execution
-  }
-  else{
-    app(people); //restarts app
-  }
+ alert(`Descendants of ${person.firstName} ${person.lastName}:\n${showDescendantsString}`);
+
 }
   
 
@@ -406,14 +410,8 @@ function displayFamily(person, people){
     family += 'No siblings in system.'
   }
 
-  let alertFamily = `${person[0].firstName} ${person[0].lastName} Family:\n\n${family}`;
-  let continueApp = confirm(`${alertFamily}\n\nSelect 'OK' to go back to person or 'Cancel' to start a new search.`);
-  if (continueApp == true){
-    mainMenu(person, people); //stop execution
-  }
-  else{
-    app(people); //restarts app
-  }
+  let alertFamily = `${person.firstName} ${person.lastName} Family:\n\n${family}`;
+  alert(alertFamily);
   }
 
  
