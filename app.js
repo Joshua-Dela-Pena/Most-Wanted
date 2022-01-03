@@ -8,6 +8,11 @@ let allData = [];
 /////////////////////////////////////////////////////////////////
 //#region
 //function to search by person name
+function viewAll(people){
+  displayAllData(people);
+  allData = people
+}
+
 function searchByName(people){
   //clears out old form for trait search
   if(document.forms['traitSearch']['trait'].value != ''){
@@ -30,7 +35,7 @@ function searchByName(people){
     }
   });
   
-  displayAllData(foundPerson, people);
+  displayAllData(foundPerson);
   searchData = foundPerson;
   allData = people;
 }
@@ -80,7 +85,7 @@ function searchByTraits(people){
     }
   }
   
-  displayAllData(searchPool, people);
+  displayAllData(searchPool);
   searchData = searchPool;
   allData = people;
 }
@@ -276,14 +281,28 @@ function displayAllData(selectedPeople){
 //adds event listeners for each display family and display descendants button
 document.body.addEventListener('click',(element) => {
   console.log(element.target.id);
-  if(element.target.id.includes('family')){
-    let familyIndex = element.target.id.charAt(0);
-    displayFamily(searchData[familyIndex], allData)
+  if(searchData.length != 0){
+    if(element.target.id.includes('family')){
+      let familyIndex = element.target.id.charAt(0);
+      displayFamily(searchData[familyIndex], allData)
+    }
+  
+    else if(element.target.id.includes('descendants')){
+      let descendantsIndex = element.target.id.charAt(0);
+      displayDescendants(searchData[descendantsIndex], allData)
+    }
   }
 
-  else if(element.target.id.includes('descendants')){
-    let descendantsIndex = element.target.id.charAt(0);
-    displayDescendants(searchData[descendantsIndex], allData)
+  else{
+    if(element.target.id.includes('family')){
+      let familyIndex = element.target.id.charAt(0);
+      displayFamily(allData[familyIndex], allData)
+    }
+  
+    else if(element.target.id.includes('descendants')){
+      let descendantsIndex = element.target.id.charAt(0);
+      displayDescendants(allData[descendantsIndex], allData)
+    }
   }
 })
 
