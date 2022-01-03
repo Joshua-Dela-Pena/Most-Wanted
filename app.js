@@ -8,9 +8,10 @@
 
 // app is the function called to start the entire application
 function app(people){
-  let searchType = promptFor("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo).toLowerCase();
+  let searchType = document.forms['startSearch']['searchType']
+  // promptFor("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo).toLowerCase();
   let searchResults;
-  switch(searchType){
+  switch(searchType.value){
     case 'yes':
       searchResults = searchByName(people);
       mainMenu(searchResults, people); // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
@@ -77,8 +78,15 @@ function mainMenu(person, people){
 
 //nearly finished function used to search through an array of people to find matching first and last name and return a SINGLE person object.
 function searchByName(people){
-  let firstName = promptFor("What is the person's first name?", nameValid);
-  let lastName = promptFor("What is the person's last name?", nameValid);
+  //clears out old form
+  if(document.forms['traitSearch']['trait'].value != ''){
+    document.forms['traitSearch']['trait'].value = '';
+  }
+
+  let firstName = document.forms['nameSearch']['firstName'].value
+  //promptFor("What is the person's first name?", nameValid);
+  let lastName = document.forms['nameSearch']['lastName'].value
+  //promptFor("What is the person's last name?", nameValid);
 
   let foundPerson = people.filter(function(potentialMatch){
     if(potentialMatch.firstName === firstName && potentialMatch.lastName === lastName){
@@ -88,11 +96,21 @@ function searchByName(people){
       return false;
     }
   })
-  return foundPerson;
+  
+  displayAllData(foundPerson);
+  // preventReload();
+  //return foundPerson;
 }
 
 function searchByTraits(people){
-  let searchCriteria = promptFor("Please type in search criteria without spaces then value. \n'Separate multiple criteria by a semicolon (no spaces around semicolon). \nCan also select 'restart' or 'quit'.\n(example one criteria - eyecolor brown)\n(example multiple criteria - eyecolor brown;gender female)", traitValidate).toLowerCase();
+  //clears out old form
+  if(document.forms['nameSearch']['firstName'].value != ''){
+    document.forms['nameSearch']['firstName'].value = '';
+    document.forms['nameSearch']['lastName'].value = '';
+  }
+
+  let searchCriteria = document.forms['traitSearch']['trait'].value
+  // promptFor("Please type in search criteria without spaces then value. \n'Separate multiple criteria by a semicolon (no spaces around semicolon). \nCan also select 'restart' or 'quit'.\n(example one criteria - eyecolor brown)\n(example multiple criteria - eyecolor brown;gender female)", traitValidate).toLowerCase();
   searchCriteria = searchCriteria.split(';');
 
   let searchPool = people;
@@ -124,7 +142,8 @@ function searchByTraits(people){
     }
   }
   
-  return searchPool;
+  displayAllData(searchPool);
+  //return searchPool;
 }
 
 function searchByGender(gender, people){
@@ -291,6 +310,27 @@ else {
 //#region 
 
 // alerts a list of people
+
+function displayAllData(people){
+  let peopleTable = document.getElementById('matchedPeopleInfo');
+  let peopleInfo = people;
+  if (peopleTable.innerHTML != "") {
+    clearTable();
+  }
+
+  for(let i=0;i<peopleInfo.length;i++){
+    peopleTable.innerHTML += `<tr>
+    <td>${peopleInfo[i].firstName}</td>
+    <td>${peopleInfo[i].lastName}</td>
+    </tr>`
+  }
+}
+
+function clearTable(){
+  let peopleTable = document.getElementById('matchedPeopleInfo');
+  peopleTable.innerHTML = '<tr> <td></td><td></td> <tr>'
+}
+
 function displayPeople(potentialMatches, people){
   let potentialMatchesList = potentialMatches.map(function(person){
     return person.firstName + " " + person.lastName;
