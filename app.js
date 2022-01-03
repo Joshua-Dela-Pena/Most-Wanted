@@ -10,7 +10,8 @@ let allData = [];
 //function to search by person name
 function viewAll(people){
   displayAllData(people);
-  allData = people
+  allData = people;
+  searchData = [];
 }
 
 function searchByName(people){
