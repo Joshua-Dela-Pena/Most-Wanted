@@ -1,7 +1,8 @@
 body {
     font-family: 'Trebuchet MS', sans-serif;
-    background-image: url(images\utsman-media-fUHGcI46s5Y-unsplash.jpg);
+    background-image: url("/images/utsman-media-fUHGcI46s5Y-unsplash.jpg");
 }
+
 
 table, td, th {  
     border: 1px solid;
