@@ -317,8 +317,8 @@ function displayAllData(selectedPeople, people){
   }
 
   for(let i=0;i<selectedPeople.length;i++){
-    let familyString = "family" + i;
-    let descendantString = "descendants" + i;
+    let familyString = i + "family";
+    let descendantString = i + "descendants";
 
     peopleTable.innerHTML += `<tr>
     <td>${selectedPeople[i].firstName}</td>
@@ -332,20 +332,18 @@ function displayAllData(selectedPeople, people){
     <td><button id=${familyString}>Display Family</button></td>
     <td><button id=${descendantString}>Display Descendants</button></td>
     </tr>`
-
-    
-    // displayFamily(selectedPeople[i], people);
     
     
+    document.getElementById(`${familyString}`).onclick = function () {displayFamily(selectedPeople[i], people)};
+    document.getElementById(`${descendantString}`).onclick = function () {displayDescendants(selectedPeople[i], people)};
   }
   
-  document.getElementById(`${familyString}`).onclick = function () {displayFamily(selectedPeople[i], people)};
-  document.getElementById(`${descendantString}`).onclick = function () {displayDescendants(selectedPeople[i], people)};
+  
 }
 
 function clearTable(){
   let peopleTable = document.getElementById('matchedPeopleInfo');
-  peopleTable.innerHTML = '<tr> <td></td><td></td> <tr>'
+  peopleTable.innerHTML = ''
 }
 
 

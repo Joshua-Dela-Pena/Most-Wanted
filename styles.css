@@ -1,0 +1,36 @@
+body {
+    font-family: 'Trebuchet MS', sans-serif;
+    background-color: #d4d3d3;
+}
+
+table, td, th {  
+    border: 1px solid #ddd;
+    text-align: left;
+}
+  
+table {
+    border-collapse: collapse;
+    width: 40%;
+}
+
+th {
+    background-color: #af6868;
+    padding: 15px;
+}
+  
+tr, td {
+    background-color: #e7e7e7;
+    border-width: 2px;
+    border-color: black;
+    padding: 10px
+}
+
+.center-text {
+    text-align: center;
+    justify-content: center;
+}
+
+.center-table {
+    margin-left: auto;
+    margin-right: auto;
+}
