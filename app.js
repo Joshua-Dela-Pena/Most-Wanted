@@ -322,6 +322,12 @@ function displayAllData(people){
     peopleTable.innerHTML += `<tr>
     <td>${peopleInfo[i].firstName}</td>
     <td>${peopleInfo[i].lastName}</td>
+    <td>${peopleInfo[i].gender}</td>
+    <td>${peopleInfo[i].dob}</td>
+    <td>${peopleInfo[i].height}</td>
+    <td>${peopleInfo[i].weight}</td>
+    <td>${peopleInfo[i].eyeColor}</td>
+    <td>${peopleInfo[i].occupation}</td>
     </tr>`
   }
 }
