@@ -97,7 +97,7 @@ function searchByName(people){
     }
   })
   
-  displayAllData(foundPerson);
+  displayAllData(foundPerson, people);
   // preventReload();
   //return foundPerson;
 }
@@ -142,7 +142,7 @@ function searchByTraits(people){
     }
   }
   
-  displayAllData(searchPool);
+  displayAllData(searchPool, people);
   //return searchPool;
 }
 
@@ -310,10 +310,8 @@ else {
 //#region 
 
 // alerts a list of people
-
-function displayAllData(people){
+function displayAllData(peopleInfo, people){
   let peopleTable = document.getElementById('matchedPeopleInfo');
-  let peopleInfo = people;
   if (peopleTable.innerHTML != "") {
     clearTable();
   }
@@ -322,6 +320,8 @@ function displayAllData(people){
     peopleTable.innerHTML += `<tr>
     <td>${peopleInfo[i].firstName}</td>
     <td>${peopleInfo[i].lastName}</td>
+    <td><button onclick=alertHello('Good Morning')()>Display Family</button></td>
+    <td><button onclick=displayDescendants(${peopleInfo[i]}, ${people})>Display Descendants</button></td>
     </tr>`
   }
 }
@@ -331,20 +331,23 @@ function clearTable(){
   peopleTable.innerHTML = '<tr> <td></td><td></td> <tr>'
 }
 
-function displayPeople(potentialMatches, people){
-  let potentialMatchesList = potentialMatches.map(function(person){
-    return person.firstName + " " + person.lastName;
-  }).join("\n");
-
-  let continueApp = confirm(`The search returned multiple matches. Here are the potential matches:\n${potentialMatchesList}\n\nSelect 'OK' to start new search or 'Cancel' to exit app.`);
-  
-  if (continueApp == true){
-    app(people); //restarts app
-  }
-  else{
-    return; //stop execution
-  }
+function alertHello(hello){
+  alert(hello)
 }
+// function displayPeople(potentialMatches, people){
+//   let potentialMatchesList = potentialMatches.map(function(person){
+//     return person.firstName + " " + person.lastName;
+//   }).join("\n");
+
+//   let continueApp = confirm(`The search returned multiple matches. Here are the potential matches:\n${potentialMatchesList}\n\nSelect 'OK' to start new search or 'Cancel' to exit app.`);
+  
+//   if (continueApp == true){
+//     app(people); //restarts app
+//   }
+//   else{
+//     return; //stop execution
+//   }
+// }
 
 function displayDescendants(person, people){
  let descendants = searchDescendantsRecursion(person[0], people);
