@@ -1,10 +1,10 @@
 body {
     font-family: 'Trebuchet MS', sans-serif;
-    background-color: #d4d3d3;
+    background-image: url(images\utsman-media-fUHGcI46s5Y-unsplash.jpg);
 }
 
 table, td, th {  
-    border: 1px solid #ddd;
+    border: 1px solid;
     text-align: left;
 }
   
@@ -14,12 +14,16 @@ table {
 }
 
 th {
-    background-color: #af6868;
+    background-color: #d4d3d3;
     padding: 15px;
+}
+
+h1 {
+    background-color: #ff8c00;
 }
   
 tr, td {
-    background-color: #e7e7e7;
+    background-color: #ffffff;
     border-width: 2px;
     border-color: black;
     padding: 10px
