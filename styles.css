@@ -1,6 +1,5 @@
 body {
     font-family: 'Trebuchet MS', sans-serif;
-    background-image: url("/images/utsman-media-fUHGcI46s5Y-unsplash.jpg");
 }
 
 
@@ -38,4 +37,12 @@ tr, td {
 .center-table {
     margin-left: auto;
     margin-right: auto;
+}
+
+img{
+    position: absolute;
+    height: auto;
+    width: 100%;
+    opacity: 45%;   
+    z-index: -1;
 }
