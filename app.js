@@ -318,6 +318,7 @@ function displayAllData(selectedPeople, people){
 
   for(let i=0;i<selectedPeople.length;i++){
     let familyString = "family" + i;
+    let descendantString = "descendants" + i;
 
     peopleTable.innerHTML += `<tr>
     <td>${selectedPeople[i].firstName}</td>
@@ -328,17 +329,18 @@ function displayAllData(selectedPeople, people){
     <td>${selectedPeople[i].weight}</td>
     <td>${selectedPeople[i].eyeColor}</td>
     <td>${selectedPeople[i].occupation}</td>
-    <td><button id="family">Display Family</button></td>
-    <td><button id="descendants">Display Descendants</button></td>
+    <td><button id=${familyString}>Display Family</button></td>
+    <td><button id=${descendantString}>Display Descendants</button></td>
     </tr>`
 
-    document.getElementById("family").onclick = function () {displayFamily(selectedPeople[i], people)};
-    document.getElementById("descendants").onclick = function () {displayDescendants(selectedPeople[i], people)};
-
-   // displayFamily(selectedPeople[i], people);
-
- 
+    
+    // displayFamily(selectedPeople[i], people);
+    
+    
   }
+  
+  document.getElementById(`${familyString}`).onclick = function () {displayFamily(selectedPeople[i], people)};
+  document.getElementById(`${descendantString}`).onclick = function () {displayDescendants(selectedPeople[i], people)};
 }
 
 function clearTable(){
