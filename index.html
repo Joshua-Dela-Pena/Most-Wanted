@@ -13,9 +13,14 @@
       <br><br>
     <div class="row">
     <h1 class="center-text">Welcome to Most Wanted</h1>
+    <p class="center-text">You may search by either name - first name and last name starting with capital letters (i.e. Bob Brown).
+      <br>Traits that can be searched include: eyecolor, height, weight and gender.
+      <br>You can search by a single trait (i.e. eyecolor brown) or multiple traits separated by
+      a semicolon (i.e. eyecolor brown;gender female).
+    </p>
   </div>
   
-  <br><br>
+  <br>
 
     <div class="row">
       <div class ="col center-text">
@@ -40,7 +45,8 @@
   <div class="row">
     <table id="matchedPeople" onload = "displayAllData(data)">
       <thead>
-        <tr>
+        <tr class="center-text">
+          <th>Index</th>
           <th>First Name</th> <th>Last Name</th> <th>Gender</th> <th>DOB</th>
           <th>Height</th> <th>Weight</th> <th>Eye Color</th> <th>Occupation</th>
           <th>Family</th> <th>Descendants</th>
