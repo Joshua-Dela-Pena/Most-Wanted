@@ -9,6 +9,15 @@ let allData = [];
 //#region
 //function to search by person name
 function viewAll(people){
+  if(document.forms['traitSearch']['trait'].value != ''){
+    document.forms['traitSearch']['trait'].value = '';
+  };
+
+  if(document.forms['nameSearch']['firstName'].value != ''){
+    document.forms['nameSearch']['firstName'].value = '';
+    document.forms['nameSearch']['lastName'].value = '';
+  };
+  
   displayAllData(people);
   allData = people;
   searchData = [];
